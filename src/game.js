@@ -1,5 +1,5 @@
 (() => {
-  const ROUND_COUNT = 15;
+  const ROUND_COUNT = 9999;
   const STORAGE_KEY = 'mathquest_v05_save';
   const SHOP_AFTER_DEFEATS = new Set([2, 4]);
 
@@ -264,8 +264,8 @@
     els.uiCombo2.textContent = STATE.combo;
     els.uiLevel.textContent = STATE.defeatedMonsters + 1;
     els.uiLevel2.textContent = STATE.defeatedMonsters + 1;
-    els.uiRound.textContent = `${Math.min(STATE.question, ROUND_COUNT)}/${ROUND_COUNT}`;
-    els.uiRound2.textContent = `${Math.min(STATE.question, ROUND_COUNT)}/${ROUND_COUNT}`;
+    els.uiRound.textContent = `№${STATE.question}`;
+    els.uiRound2.textContent = `№${STATE.question}`;
     els.uiRank.textContent = uiRankPreview();
     els.uiDmg.textContent = currentDamagePreview();
     els.uiDmg2.textContent = currentDamagePreview();
@@ -730,7 +730,7 @@
     saveLocal();
     setScreen('end');
 
-    const accuracy = STATE.question > 1 ? STATE.correctCount / Math.min(STATE.question - 1, ROUND_COUNT) : 0;
+    const accuracy = STATE.question > 1 ? STATE.correctCount / (STATE.question - 1) : 0;
     const rank = rankFor(STATE.score, accuracy, STATE.life, STATE.bestCombo);
 
     els.endTitle.textContent = won ? 'Перемога!' : 'Поразка';
