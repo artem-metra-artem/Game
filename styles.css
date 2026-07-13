@@ -1,0 +1,483 @@
+  :root{
+    --bg1:#071126;
+    --bg2:#173c67;
+    --panel:rgba(15, 25, 52, .92);
+    --panel2:rgba(255,255,255,.06);
+    --text:#eef4ff;
+    --muted:#b8c8e8;
+    --good:#39d07c;
+    --bad:#ff6666;
+    --gold:#ffd66b;
+    --shadow:0 22px 54px rgba(0,0,0,.36);
+    --r:22px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family:Arial, Helvetica, sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(circle at 20% 18%, rgba(255,255,255,.09), transparent 18%),
+      radial-gradient(circle at 80% 28%, rgba(255,255,255,.05), transparent 20%),
+      radial-gradient(circle at 50% 80%, rgba(255,255,255,.04), transparent 20%),
+      linear-gradient(180deg,var(--bg1),var(--bg2));
+    overflow-x:hidden;
+  }
+  #bgfx{
+    position:fixed; inset:0; pointer-events:none; opacity:.56;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,.9) 1px, transparent 1.1px),
+      radial-gradient(circle, rgba(255,255,255,.5) 1px, transparent 1.1px);
+    background-size: 120px 120px, 200px 200px;
+    background-position: 0 0, 40px 60px;
+    animation: drift 30s linear infinite;
+  }
+  @keyframes drift { from{transform:translateY(0)} to{transform:translateY(60px)} }
+  .wrap{
+    max-width:1100px;
+    margin:0 auto;
+    padding:16px;
+    position:relative;
+    z-index:1;
+  }
+  .card{
+    background:var(--panel);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:var(--r);
+    box-shadow:var(--shadow);
+    padding:18px;
+    backdrop-filter: blur(8px);
+  }
+  .topbar{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:12px;
+    align-items:center;
+  }
+  h1{
+    margin:0;
+    font-size:clamp(26px, 4vw, 46px);
+    letter-spacing:.3px;
+  }
+  .sub{
+    margin-top:6px;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.5;
+  }
+  .pills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:flex-end;
+  }
+  .pill{
+    min-width:84px;
+    text-align:center;
+    padding:10px 12px;
+    border-radius:999px;
+    background:var(--panel2);
+    border:1px solid rgba(255,255,255,.08);
+    font-weight:800;
+  }
+  .screen{display:none}
+  .screen.active{display:block}
+  .grid{
+    display:grid;
+    grid-template-columns: 370px 1fr;
+    gap:16px;
+    margin-top:16px;
+  }
+  @media (max-width: 940px){
+    .grid{grid-template-columns:1fr}
+  }
+  .arena, .panel, .shop{
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;
+    padding:16px;
+  }
+  .arena{
+    min-height:540px;
+    position:relative;
+    overflow:hidden;
+    transition:background .45s ease;
+  }
+  .arena::after{
+    content:"";
+    position:absolute;
+    inset:auto -20% -45% -20%;
+    height:60%;
+    background:radial-gradient(circle at 50% 0%, rgba(121,170,255,.22), transparent 60%);
+    pointer-events:none;
+  }
+  .world{
+    position:absolute; inset:0;
+    pointer-events:none;
+    opacity:.55;
+    background:
+      linear-gradient(180deg, transparent 0%, transparent 63%, rgba(255,255,255,.08) 63%, rgba(255,255,255,.08) 66%, transparent 66%),
+      radial-gradient(circle at 50% 100%, rgba(0,0,0,.28), transparent 60%);
+  }
+  .battleline{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:10px;
+    position:relative;
+    z-index:1;
+    min-height:300px;
+    padding:14px 4px 0;
+  }
+  .hero, .monster{
+    width:42%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    position:relative;
+  }
+  .heroSprite, .monsterSprite{
+    font-size:90px;
+    line-height:1;
+    filter: drop-shadow(0 12px 18px rgba(0,0,0,.35));
+    transform-origin:center;
+    will-change: transform, opacity;
+  }
+
+  .monsterSprite{
+    width:210px;
+    height:170px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:0;
+  }
+  .monsterSprite img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    image-rendering:auto;
+  }
+  .monsterSprite.emojiMonster{
+    font-size:90px;
+  }
+
+  .heroSprite{
+    width:190px;
+    height:190px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:0;
+  }
+  .heroSprite img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    image-rendering:auto;
+  }
+
+  .heroSprite{
+    animation: heroIdle 2.3s ease-in-out infinite;
+  }
+  .monsterSprite{
+    animation: monsterIdle 2.5s ease-in-out infinite;
+  }
+  .heroSprite.attack{ animation: heroAttack .42s ease; }
+  .monsterSprite.hit{ animation: monsterHit .35s ease; }
+  .monsterSprite.dead{ animation: monsterDead .7s ease forwards; }
+  .monsterSprite.attack{ animation: monsterAttack .42s ease; }
+  .heroName, .monsterName{
+    font-weight:900;
+    font-size:17px;
+    text-align:center;
+  }
+  @keyframes heroIdle{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-6px)}
+  }
+  @keyframes monsterIdle{
+    0%,100%{transform:translateY(0) scale(1)}
+    50%{transform:translateY(-5px) scale(1.02)}
+  }
+  @keyframes heroAttack{
+    0%{transform:translateX(0) rotate(0deg)}
+    50%{transform:translateX(12px) rotate(-7deg)}
+    100%{transform:translateX(0) rotate(0deg)}
+  }
+  @keyframes monsterHit{
+    0%{transform:translateX(0) scale(1)}
+    25%{transform:translateX(10px) scale(1.08)}
+    60%{transform:translateX(-8px) scale(.98)}
+    100%{transform:translateX(0) scale(1)}
+  }
+  @keyframes monsterAttack{
+    0%{transform:translateX(0) scale(1)}
+    48%{transform:translateX(-18px) scale(1.06) rotate(-2deg)}
+    100%{transform:translateX(0) scale(1)}
+  }
+  @keyframes monsterDead{
+    0%{transform:scale(1); opacity:1}
+    60%{transform:scale(.7) rotate(-6deg); opacity:.65}
+    100%{transform:scale(.2) rotate(-18deg); opacity:0}
+  }
+  .bars{
+    display:grid;
+    gap:10px;
+    width:100%;
+    margin-top:4px;
+    position:relative;
+    z-index:1;
+  }
+  .barLabel{
+    display:flex;
+    justify-content:space-between;
+    color:var(--muted);
+    font-size:13px;
+    margin:0 2px 5px;
+  }
+  .bar{
+    height:18px;
+    border-radius:999px;
+    overflow:hidden;
+    background:rgba(255,255,255,.10);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,.35);
+  }
+  .fill{
+    height:100%;
+    width:100%;
+    border-radius:inherit;
+    transition:width .35s ease;
+  }
+  .fill.enemy{background:linear-gradient(90deg,#ff6666,#ff9f68);}
+  .fill.player{background:linear-gradient(90deg,#36d17d,#9ef5b0);}
+  .battleInfo{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-top:14px;
+    position:relative;
+    z-index:1;
+  }
+  @media (max-width:560px){
+    .battleInfo{grid-template-columns:repeat(2,1fr)}
+  }
+  .stat{
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    padding:12px 10px;
+    border-radius:14px;
+    text-align:center;
+  }
+  .stat .k{font-size:12px;color:var(--muted)}
+  .stat .v{margin-top:4px;font-size:22px;font-weight:900}
+  .panel{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .question{
+    font-size:30px;
+    line-height:1.2;
+    min-height:92px;
+    padding:8px 2px 0;
+  }
+  .note{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.45;
+  }
+  .answers{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  @media (max-width:560px){
+    .answers{grid-template-columns:1fr}
+  }
+  button{
+    appearance:none;
+    border:none;
+    cursor:pointer;
+    border-radius:16px;
+    padding:14px 14px;
+    font-size:17px;
+    font-weight:800;
+    color:var(--text);
+    background:linear-gradient(180deg, rgba(121,170,255,.96), rgba(77,124,255,.92));
+    box-shadow:0 10px 22px rgba(0,0,0,.18);
+    transition:transform .12s ease, filter .2s ease, opacity .2s ease;
+  }
+  button:hover{filter:brightness(1.07)}
+  button:active{transform:translateY(1px) scale(.99)}
+  button:disabled{opacity:.85; cursor:not-allowed}
+  .opt.good{background:linear-gradient(180deg, rgba(57,208,124,.96), rgba(44,170,98,.92))}
+  .opt.bad{background:linear-gradient(180deg, rgba(255,102,102,.96), rgba(219,78,78,.92))}
+  .controls{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .controls button{
+    min-width:160px;
+    flex:1;
+  }
+  #nextBtn{display:none}
+  #msg{
+    min-height:34px;
+    font-size:16px;
+    font-weight:700;
+  }
+  .goodtxt{color:#92f0aa}
+  .badtxt{color:#ff9a9a}
+  .warning{color:#ff5f5f;font-weight:900}
+  .frac{
+    display:inline-flex;
+    flex-direction:column;
+    align-items:center;
+    vertical-align:middle;
+    line-height:1;
+    margin:0 .05em;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  .frac .top,.frac .bottom{
+    display:block;
+    min-width:1.08em;
+    text-align:center;
+    padding:0 .24em;
+  }
+  .frac .top{
+    border-bottom:2px solid currentColor;
+    padding-bottom:.12em;
+    margin-bottom:.08em;
+  }
+  .float{
+    position:absolute;
+    pointer-events:none;
+    font-weight:900;
+    animation:floatUp .8s ease-out forwards;
+    text-shadow:0 8px 14px rgba(0,0,0,.35);
+  }
+  @keyframes floatUp{
+    from{transform:translateY(0) scale(1); opacity:1}
+    to{transform:translateY(-48px) scale(1.15); opacity:0}
+  }
+  .shake{animation:shake .28s linear}
+  @keyframes shake{
+    0%{transform:translate(0,0)}
+    25%{transform:translate(-7px,2px)}
+    50%{transform:translate(7px,-2px)}
+    75%{transform:translate(-5px,1px)}
+    100%{transform:translate(0,0)}
+  }
+  .sword{
+    position:absolute;
+    left:112px;
+    top:170px;
+    font-size:26px;
+    pointer-events:none;
+    opacity:0;
+    transform:translate(0,0) rotate(-18deg);
+    z-index:3;
+  }
+  .sword.active{ animation:swordFly .34s ease-out forwards; }
+  @keyframes swordFly{
+    0%{opacity:1; transform:translate(0,0) rotate(-18deg)}
+    80%{opacity:1; transform:translate(190px,-44px) rotate(16deg)}
+    100%{opacity:0; transform:translate(225px,-54px) rotate(20deg)}
+  }
+  .critBanner{
+    position:absolute;
+    left:50%;
+    top:40px;
+    transform:translateX(-50%);
+    font-size:24px;
+    font-weight:900;
+    color:var(--gold);
+    text-shadow:0 8px 20px rgba(0,0,0,.45);
+    opacity:0;
+    pointer-events:none;
+    z-index:4;
+  }
+  .critBanner.show{animation:critPop .6s ease-out forwards}
+  @keyframes critPop{
+    0%{opacity:0; transform:translateX(-50%) scale(.7)}
+    20%{opacity:1; transform:translateX(-50%) scale(1.08)}
+    100%{opacity:0; transform:translateX(-50%) scale(1.0)}
+  }
+  .screenTitle{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+  }
+  .screenTitle h2{margin:0;font-size:22px}
+  .shopGrid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+  }
+  @media (max-width:760px){
+    .shopGrid{grid-template-columns:1fr}
+  }
+  .shopCard{
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .shopCard h3{margin:0}
+  .shopCard .desc{color:var(--muted); font-size:14px; line-height:1.4}
+  .shopCard .cost{font-weight:900;color:var(--gold)}
+  .tiny{font-size:13px;color:var(--muted)}
+  .summary{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-top:16px;
+  }
+  @media (max-width:560px){.summary{grid-template-columns:1fr}}
+  .center{text-align:center}
+  .rank{
+    font-size:60px;
+    font-weight:900;
+    margin:8px 0 0;
+  }
+  .questChest{
+    margin:10px auto 0;
+    font-size:72px;
+    opacity:0;
+    transform:scale(.5);
+    transition:opacity .3s ease, transform .35s ease;
+  }
+  .questChest.show{
+    opacity:1;
+    transform:scale(1);
+    animation: chestPop .85s ease forwards;
+  }
+  @keyframes chestPop{
+    0%{transform:scale(.55) translateY(10px)}
+    55%{transform:scale(1.08) translateY(-6px)}
+    100%{transform:scale(1) translateY(0)}
+  }
+  .shopMsg{
+    min-height:22px;
+    font-weight:900;
+  }
+  .smallScreenInfo{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.4;
+  }
+  .dim{opacity:.66}
+  .shopCard button.dimbtn{
+    opacity:.62;
+  }
