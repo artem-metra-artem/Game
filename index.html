@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Math Quest v0.6.5</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="bgfx"></div>
+<div class="wrap">
+  <div class="card">
+    <div class="topbar">
+      <div>
+        <h1>⚔️ Math Quest v0.6.5</h1>
+        <div class="sub">Відповідай на питання і перемагай босів силою математики!</div>
+      </div>
+      <div class="pills">
+        <div class="pill">❤️ <span id="uiLife">3</span></div>
+        <div class="pill">🪙 <span id="uiCoins">0</span></div>
+        <div class="pill">⭐ <span id="uiXp">0</span></div>
+        <div class="pill">🔁 <span id="uiCombo">0</span></div>
+      </div>
+    </div>
+
+    <div id="menuScreen" class="screen active">
+      <div class="grid">
+        <div class="arena" id="menuArena">
+          <div class="world"></div>
+          <div class="battleline">
+            <div class="hero">
+              <div class="heroSprite" id="heroSpriteMenu"></div>
+              <div class="heroName">Герой</div>
+            </div>
+            <div class="monster">
+              <div class="monsterSprite" id="menuMonsterSprite"></div>
+              <div class="monsterName" id="menuMonsterName">Математичний слиз</div>
+            </div>
+          </div>
+          <div class="battleInfo">
+            <div class="stat"><div class="k">Рівень</div><div class="v" id="uiLevel">1</div></div>
+            <div class="stat"><div class="k">Питання</div><div class="v" id="uiRound">1/15</div></div>
+            <div class="stat"><div class="k">Ранг</div><div class="v" id="uiRank">C</div></div>
+            <div class="stat"><div class="k">Шкода</div><div class="v" id="uiDmg">20</div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="screenTitle"><h2>Почати пригоду?</h2></div>
+          <div class="note">Після кожної 5-ї та 10-ї перемоги відкривається магазин.</div>
+          <div class="smallScreenInfo">Найкращий результат збережеться локально у браузері.</div>
+          <div class="smallScreenInfo">Після завершення гри буде видно збережений рекорд і кількість перемог цього браузера.</div>
+          <div class="smallScreenInfo">Герой тепер використовує окремі спрайти для HP, атаки, шкоди, поразки та перемоги.</div>
+          <div class="controls">
+            <button id="startBtn">Почати</button>
+          </div>
+          <div class="tiny">Це проміжна RPG-версія: анімації, звуки, комбо, підсилення, підказки і кращий контроль потоку гри.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="gameScreen" class="screen">
+      <div class="grid">
+        <div class="arena" id="arena">
+          <div class="world" id="world"></div>
+          <div class="critBanner" id="critBanner">CRITICAL HIT!</div>
+          <div class="sword" id="sword">🗡️</div>
+
+          <div class="battleline">
+            <div class="hero">
+              <div class="heroSprite" id="heroSprite"></div>
+              <div class="heroName">Герой</div>
+            </div>
+            <div class="monster">
+              <div class="monsterSprite" id="monsterSprite"></div>
+              <div class="monsterName" id="monsterName">Монстр</div>
+            </div>
+          </div>
+
+          <div class="bars">
+            <div>
+              <div class="barLabel"><span>HP монстра</span><span id="uiEnemyHpText">100/100</span></div>
+              <div class="bar"><div class="fill enemy" id="enemyBar"></div></div>
+            </div>
+            <div>
+              <div class="barLabel"><span>HP героя</span><span id="uiPlayerHpText">3/3</span></div>
+              <div class="bar"><div class="fill player" id="playerBar"></div></div>
+            </div>
+          </div>
+
+          <div class="battleInfo">
+            <div class="stat"><div class="k">Рівень</div><div class="v" id="uiLevel2">1</div></div>
+            <div class="stat"><div class="k">Питання</div><div class="v" id="uiRound2">1/15</div></div>
+            <div class="stat"><div class="k">Комбо</div><div class="v" id="uiCombo2">0</div></div>
+            <div class="stat"><div class="k">Шкода</div><div class="v" id="uiDmg2">20</div></div>
+          </div>
+        </div>
+
+        <div class="panel" id="battlePanel">
+          <div class="note">Тип задачі: <span id="typeLabel">—</span></div>
+          <div class="question" id="question"></div>
+          <div class="note" id="subnote"></div>
+          <div class="answers" id="answers"></div>
+          <div id="msg"><span id="feedback"></span></div>
+          <div class="controls">
+            <button id="nextBtn">Далі</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="shopScreen" class="screen">
+      <div class="shop">
+        <div class="screenTitle">
+          <h2>🏪 Магазин</h2>
+          <div class="note">З'являється тільки після 5-ї та 10-ї перемоги.</div>
+        </div>
+        <div id="shopMsg" class="shopMsg"></div>
+        <div class="shopGrid" id="shopGrid">
+          <div class="shopCard" data-item="life">
+            <h3>❤️ Зілля</h3>
+            <div class="desc">Додає 1 життя, але не більше максимального ліміту +1.</div>
+            <div class="cost">Ціна: 12 🪙</div>
+            <button data-buy="life">Купити</button>
+          </div>
+          <div class="shopCard" data-item="boost">
+            <h3>⚡ Підсилення</h3>
+            <div class="desc">Наступні 3 правильні відповіді завдають більше шкоди.</div>
+            <div class="cost">Ціна: 18 🪙</div>
+            <button data-buy="boost">Купити</button>
+          </div>
+          <div class="shopCard" data-item="hint">
+            <h3>💡 Підказка</h3>
+            <div class="desc">Показує правильну відповідь для наступного питання.</div>
+            <div class="cost">Ціна: 10 🪙</div>
+            <button data-buy="hint">Купити</button>
+          </div>
+        </div>
+        <div class="controls" style="margin-top:14px">
+          <button id="closeShopBtn">Продовжити</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="endScreen" class="screen">
+      <div class="center">
+        <h2 id="endTitle">Гру завершено</h2>
+        <div class="questChest" id="questChest">🧰</div>
+        <div class="rank" id="endRank">C</div>
+        <div class="sub" id="endDesc"></div>
+        <div class="summary">
+          <div class="stat"><div class="k">Очки</div><div class="v" id="finalScore">0</div></div>
+          <div class="stat"><div class="k">Монети</div><div class="v" id="finalCoins">0</div></div>
+          <div class="stat"><div class="k">Правильних</div><div class="v" id="finalCorrect">0</div></div>
+          <div class="stat"><div class="k">Найкраще комбо</div><div class="v" id="finalBestCombo">0</div></div>
+          <div class="stat"><div class="k">Рекорд</div><div class="v" id="finalBestScore">0</div></div>
+          <div class="stat"><div class="k">Збережено</div><div class="v" id="finalSaved">—</div></div>
+        </div>
+        <div class="controls" style="margin-top:16px">
+          <button id="restartBtn">Грати ще</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script src="src/game.js"></script>
+</body>
+</html>
