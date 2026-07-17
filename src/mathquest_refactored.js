@@ -31,7 +31,7 @@
     },
     {
       name: 'Піфагоблін',
-      hp: 110,
+      hp: 150,
       bg1: '#21101d',
       bg2: '#5a2248',
       sprites: {
@@ -42,39 +42,51 @@
       }
     },
     {
-      name: 'Дробовий дракон',
-      hp: 125,
+      name: 'Рівніндзя',
+      hp: 175,
       bg1: '#0e1f18',
       bg2: '#1b5c45',
       sprites: {
-        idle: spritePath('fraction_dragon_idle'),
-        attack: spritePath('fraction_dragon_attack'),
-        damage: spritePath('fraction_dragon_damage'),
-        defeated: spritePath('fraction_dragon_defeated')
+        idle: spritePath('ninja_idle'),
+        attack: spritePath('ninja_attack'),
+        damage: spritePath('ninja_damage'),
+        defeated: spritePath('ninja_defeated')
       }
     },
     {
-      name: 'Нерівний мозок',
-      hp: 115,
+      name: 'Тригономорф',
+      hp: 200,
       bg1: '#161123',
       bg2: '#502a70',
       sprites: {
-        idle: spritePath('inequality_brain_idle'),
-        attack: spritePath('inequality_brain_attack'),
-        damage: spritePath('inequality_brain_damage'),
-        defeated: spritePath('inequality_brain_defeated')
+        idle: spritePath('trigo_idle'),
+        attack: spritePath('trigo_attack'),
+        damage: spritePath('trigo_damage'),
+        defeated: spritePath('trigo_defeated')
       }
     },
     {
-      name: 'Фінальний бос',
-      hp: 150,
+      name: 'Векторіон',
+      hp: 250,
       bg1: '#1a1110',
       bg2: '#63302b',
       sprites: {
-        idle: spritePath('final_boss_idle'),
-        attack: spritePath('final_boss_attack'),
-        damage: spritePath('final_boss_damage'),
-        defeated: spritePath('final_boss_defeated')
+        idle: spritePath('vectorion_idle'),
+        attack: spritePath('vectorion_attack'),
+        damage: spritePath('vectorion_damage'),
+        defeated: spritePath('vectorion_defeated')
+      }
+    },
+    {
+      name: 'Геолем',
+      hp: 350,
+      bg1: '#1a1110',
+      bg2: '#63302b',
+      sprites: {
+        idle: spritePath('geolem_idle'),
+        attack: spritePath('geolem_attack'),
+        damage: spritePath('geolem_damage'),
+        defeated: spritePath('geolem_defeated')
       }
     }
   ];
