@@ -492,7 +492,7 @@
     }
     if (type === 'sub') {
       const a = randInt(30, 160), b = randInt(10, a - 1);
-      return { type, key:`sub:${a}:${b}`, prompt:`${a} − ${b} = ?`, correct:a-b, kind:'number', subnote:'Віднімання без від'ємного результату.' };
+      return { type, key:`sub:${a}:${b}`, prompt:`${a} − ${b} = ?`, correct:a-b, kind:'number', subnote:'Віднімання.' };
     }
     if (type === 'mul') {
       const a = randInt(4, 18), b = randInt(4, 18);
